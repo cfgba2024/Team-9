@@ -78,6 +78,51 @@ class Database:
         rows_affected = self.execute_query(query, params)
         return rows_affected
 
+        
+#     gets
+    def getPublicacion(self, ID):
+        query = 'select * from Publicacion where ID_Publicacion = %s'
+        params = (ID, )
+
+        return self.select_query(query, params)
+
+    def getUsuario(self, ID):
+        query = 'select * from Usuario where ID_Usuario = %s'
+        params = (ID, )
+
+        return self.select_query(query, params)
+          
+    def getMetrica(self, ID):
+        query = 'select * from Metrica where ID_Metrica = %s'
+        params = (ID, )
+
+        return self.select_query(query, params)
+
+    def getActividad(self, ID):
+        query = 'select * from Actividad where ID_Actividad = %s'
+        params = (ID, )
+
+        return self.select_query(query, params)
+
+    def getColegio(self, ID):
+        query = 'select * from Colegio where ID_Colegio = %s'
+        params = (ID, )
+
+        return self.select_query(query, params)
+
+    def getEtiqueta(self, ID):
+        query = 'select * from Etiqueta where ID_Etiqueta = %s'
+        params = (ID, )
+
+        return self.select_query(query, params)
+
+        
+    def etiquetas_por_publicacion(self, ID_Publicacion):
+        query = 'select * from Etiqueta E where exists (select 1 from Publicacion-Etiqueta PE where ID_Publicacion = 1 and PE.ID_Etiqueta = E.ID_Etiqueta and E.ID_Publicacion = %s)'
+        params = (ID_Publicacion, )
+
+        return self.select_query(query, params)
+          
 
     def execute_query(self, query, data=None):
         """
@@ -91,6 +136,15 @@ class Database:
             self.cursor.execute(query, data)
             self.connection.commit()
             return self.cursor.rowcount  # Number of affected rows
+        except Error as e:
+            print(f"Error: {e}")
+            return 0
+
+    def select_query(self, query, data=None):
+        try:
+            self.cursor.execute(query, data)
+            self.connection.commit()
+            return self.cursor.fetchall() 
         except Error as e:
             print(f"Error: {e}")
             return 0
