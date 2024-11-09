@@ -4,7 +4,7 @@ from mysql.connector import Error
 
 
 class Database:
-    def __init__(self, host, user, password, database):
+    def __init__(self, host=os.getenv("MYSQL_HOST"), user=os.getenv("MYSQL_USER"), password=os.getenv("MYSQL_PASSWORD"), database=os.getenv("MYSQL_DB")):
         self.host = host
         self.user = user
         self.password = password
@@ -151,14 +151,15 @@ class Database:
 
 # Ejemplo
 if __name__ == "__main__":
-    db = Database(host=os.getenv("MYSQL_HOST"), user=os.getenv("MYSQL_USER"), password=os.getenv("MYSQL_PASSWORD"), database=os.getenv("MYSQL_DB"))
+#     db = Database(host=os.getenv("MYSQL_HOST"), user=os.getenv("MYSQL_USER"), password=os.getenv("MYSQL_PASSWORD"), database=os.getenv("MYSQL_DB"))
+    db = Database()
 
     # Connect to the database
     db.connect()
 
     # Example of executing an INSERT query
 #     db.nueva_publicacion(1, "hola", "mundo")
-    db.nuevo_colegio("Escuela 2")
+#     db.nuevo_colegio("Escuela 2")
 
 
 
