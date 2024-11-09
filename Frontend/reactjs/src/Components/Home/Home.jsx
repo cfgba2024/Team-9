@@ -1,12 +1,32 @@
 //@ts-check
 
+
 import React from "react";
 import Post from "../Post/Post";
+import axios from "axios";
 import "./Home.css"
+import { useState, useEffect } from "react";
+
 
 export default function Home(){
     
-    const data = [
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        axios
+          .get('/') // Replace with your API URL
+          .then((response) => {
+            setData(response.data);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.log(error)
+          });
+      }, []);
+
+    const oldata = [
         {
             title: "t1",
             body: "b1",
@@ -32,12 +52,12 @@ export default function Home(){
             schoolId: "s4"
         }
     ]
+
+    
     return (
         <main>
             <section>
-            {data.map((item) => (
-                <Post postData={item} />
-            ))}
+            <p>{data}</p>
             </section>
         </main>
     );

@@ -5,6 +5,14 @@ import "./Registrar.css"
 
 export default function Registrar(){
     return(
-        <p>dd</p>
+        <form >
+            <select name="" id="">
+
+            </select>
+
+            <select name="" id="">
+                
+            </select>
+        </form>
     )
 }
