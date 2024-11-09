@@ -1,29 +1,21 @@
 from flask import Flask, jsonify
 import mysql.connector
-import ConexionesDB.py
+import ConexionDB
+import os
 
 app = Flask(__name__)
 
 # Configura los parámetros de conexión
-DB_CONFIG = {
-    'host': '192.168.195.223',  # o 'localhost' si es local
-    'user': 'root',
-    'password': '1898',
-    'database': 'escolares'
-}
+
 
 @app.route("/")
 def get_publicaciones():
     # Conectar a la base de datos
-    connection = mysql.connector.connect(**DB_CONFIG)
-    cursor = connection.cursor(dictionary=True)  # Cursor con diccionario para mejor lectura
+    db.connect()
 
     try:
         # Realizar una consulta
-        cursor.execute("SELECT * FROM Publicacion")  # Cambia 'publicaciones' por el nombre de tu tabla
-        results = cursor.fetchall()  # Obtener todos los resultados
-
-        # Devuelve los resultados como un JSON
+        results = ConexionDB.select_query("SELECT * FROM Publicacion")
         return jsonify(results)
     
     except mysql.connector.Error as err:
@@ -32,19 +24,17 @@ def get_publicaciones():
     
     finally:
         # Cerrar la conexión
-        cursor.close()
-        connection.close()
+        db.close()
 
 @app.route("/actividad/metricas/<id>")
 def devolver_metricas():
     # Conectar a la base de datos
-    connection = mysql.connector.connect(**DB_CONFIG)
-    cursor = connection.cursor(dictionary=True)  # Cursor con diccionario para mejor lectura
+    db.connect()
 
     try:
         # Realizar una consulta
-        cursor.execute("SELECT * FROM Metrica WHERE ID_Metrica in (SELECT ID_Metrica FROM Medica_Actividad WHERE ID_Actividad = %s", id)  # Cambia 'publicaciones' por el nombre de tu tabla
-        results = cursor.fetchall()  # Obtener todos los resultados
+        results = ConexionDB.select_query("SELECT * FROM Metrica WHERE ID_Metrica in (SELECT ID_Metrica FROM Medica_Actividad WHERE ID_Actividad = %s", id)  # Cambia 'publicaciones' por el nombre de tu tabla
+         # Obtener todos los resultados
 
         # Devuelve los resultados como un JSON
         return jsonify(results)
@@ -55,19 +45,16 @@ def devolver_metricas():
     
     finally:
         # Cerrar la conexión
-        cursor.close()
-        connection.close()
+        db.close()
 
 @app.route("/registers/schools/<id>")
 def info_formulario_registro(id):
     # Conectar a la base de datos
-    connection = mysql.connector.connect(**DB_CONFIG)
-    cursor = connection.cursor(dictionary=True)  # Cursor con diccionario para mejor lectura
+    db.connect()  # Cursor con diccionario para mejor lectura
 
     try:
         # Realizar una consulta
-        cursor.execute("SELECT * FROM Actividad WHERE ID_colegio = %s", id)  # Cambia 'publicaciones' por el nombre de tu tabla
-        results = cursor.fetchall()
+        results = ConexionDB.select_query("select * from ")
         
 
         # Devuelve los resultados como un JSON
@@ -79,20 +66,17 @@ def info_formulario_registro(id):
     
     finally:
         # Cerrar la conexión
-        cursor.close()
-        connection.close()
+        db.close()
 
-@app.route("/schools/activities/<id>")
+@app.route("/schools/activities/<id>")#devuelve la actividad conel id
 def actividades_de_la_escuela(id):
-        # Conectar a la base de datos
-    connection = mysql.connector.connect(**DB_CONFIG)
-    cursor = connection.cursor(dictionary=True)  # Cursor con diccionario para mejor lectura
+    
+    db.connect()
 
     try:
         # Realizar una consulta
-        cursor.execute("SELECT * FROM Colegio")  # Cambia 'publicaciones' por el nombre de tu tabla
-        results = cursor.fetchall()
         
+        results = ConexionDB.select_query("select * from actividad where id = %s", id)
 
         # Devuelve los resultados como un JSON
         return jsonify(results)
@@ -103,10 +87,13 @@ def actividades_de_la_escuela(id):
     
     finally:
         # Cerrar la conexión
-        cursor.close()
-        connection.close()
+        db.close()
 
 
 
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
+    db = ConexionDB.Database(host=os.getenv("MYSQL_HOST"), user=os.getenv("MYSQL_USER"), password=os.getenv("MYSQL_PASSWORD"), database=os.getenv("MYSQL_DB"))
+
+    # Connect to the database
+    
