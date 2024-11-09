@@ -1,0 +1,54 @@
+/* Home.css */
+
+/* Style for the main container */
+main {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f7f9fc;
+    min-height: 100vh;
+}
+
+/* Section to organize posts */
+section {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    width: 100%;
+}
+
+/* Basic styling for each post item */
+.post {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.post:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Title styling */
+.post-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+/* Body text styling */
+.post-body {
+    font-size: 1rem;
+    color: #555;
+}
+
+/* Optional: Styling for user and school IDs if displayed */
+.post-meta {
+    font-size: 0.875rem;
+    color: #888;
+    margin-top: 10px;
+}
